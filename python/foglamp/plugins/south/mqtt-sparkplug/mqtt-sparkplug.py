@@ -78,6 +78,7 @@ _callback_event_loop = None
 _topic = None
 _serverURL = None
 _PLUGIN_NAME = 'MQTT Sparkplug Python Plugin'
+_assetName = None
 
 def plugin_info():
     """ Returns information about the plugin.
@@ -108,6 +109,7 @@ def plugin_init(config):
     global _client
     global _topic
     global _serverURL
+    global _assetName
     data = copy.deepcopy(config)
     
     # Get connection parameters from configuration
@@ -118,6 +120,7 @@ def plugin_init(config):
     
     # Save the topic of interest for later - will be used in on_connect()
     _topic = config['topic']['value']
+    _assetName = config['assetName']['value']
     
     # Create a connection to the MQTT server
     try: 
@@ -145,7 +148,7 @@ def plugin_start(handle):
         TimeoutError
     """ 
     _client.loop_start()
-    _LOGGER.info('{} has started.'.format(_PLUGIN_NAME))    
+    _LOGGER.info('Plugin for {} has started.'.format(_assetName))    
     
 def plugin_reconfigure(handle, new_config):
     """ Reconfigures the plugin
@@ -157,7 +160,7 @@ def plugin_reconfigure(handle, new_config):
         new_handle: new handle to be used in the future calls
     """
     global _LOGGER
-    _LOGGER.info("Old config for {} {} \n new config {}".format(_PLUGIN_NAME, handle, new_config))
+    _LOGGER.info("Old config for {} {} \n new config {}".format(_assetName, handle, new_config))
 
     # Find diff between old config and new config
     diff = utils.get_diff(handle, new_config)
@@ -167,7 +170,7 @@ def plugin_reconfigure(handle, new_config):
         plugin_shutdown(handle)
         new_handle = plugin_init(new_config)
         new_handle['restart'] = 'yes'
-        _LOGGER.info("Restarting {} due to change in configuration key [{}]".format(_PLUGIN_NAME, ', '.join(diff)))
+        _LOGGER.info("Restarting {} plugin due to change in configuration key [{}]".format(_assetName, ', '.join(diff)))
     else:
         new_handle = copy.deepcopy(new_config)
         new_handle['restart'] = 'no'
@@ -185,6 +188,7 @@ def plugin_shutdown(handle):
     """
     global _client
     global _LOGGER
+    global _callback_event_loop
 
     _client.loop_stop(force=False)
     if _callback_event_loop is not None:
@@ -200,10 +204,10 @@ def on_connect(client, userdata, flags, rc):
     # reconnect then subscriptions will be renewed.
     global _topic
     global _serverURL
-    _LOGGER.info('{} has connected to {}.'.format(_PLUGIN_NAME, str(_serverURL)))
+    _LOGGER.info('{} plugin has connected to {}.'.format(_assetName, str(_serverURL)))
     
     client.subscribe(_topic)
-    _LOGGER.info('{} has subscribed to {}.'.format(_PLUGIN_NAME, str(_topic)))
+    _LOGGER.info('{} plugin has subscribed to {}.'.format(_assetName, str(_topic)))
 
     
 async def save_data(data):    
@@ -240,7 +244,7 @@ def on_message(client, userdata, msg):
                 }
                 #_LOGGER.info("UUID: " + readingKey)
                 #_LOGGER.info("Metric Name: " + str(metric.name))
-                #_LOGGER.info(data)
+                #_LOGGER.info(metric)
                 
            
                 _callback_event_loop.run_until_complete(save_data(data))              
