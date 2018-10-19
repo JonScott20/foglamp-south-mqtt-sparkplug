@@ -23,5 +23,7 @@ NOTE: the "./" in front of the package name is important here!
 
 5. Restart FogLAMP
 
+## Configuration
+
 
 
