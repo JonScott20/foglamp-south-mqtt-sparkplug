@@ -23,7 +23,11 @@ NOTE: the "./" in front of the package name is important here!
 
 5. Restart FogLAMP
 
-## Configuration
+## Configuration Options
+![image](https://github.com/JonScott20/foglamp-south-mqtt-sparkplug/blob/master/images/MQTTConfiguration-FogLAMP.png)
 
+## Sample Assets
+![image](https://github.com/JonScott20/foglamp-south-mqtt-sparkplug/blob/master/images/MQTTAssets-FogLAMP.png)
 
-
+## Sample Data
+![image](https://github.com/JonScott20/foglamp-south-mqtt-sparkplug/blob/master/images/MQTTPanelTemp-FogLAMP.png)
