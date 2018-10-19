@@ -20,6 +20,7 @@ SHA-256: C5D716F5EF436CA8F2758F30683ACC8D2773CB73D400B31AC84BD1876C93C051
 > sudo apt install ./foglamp-south-mqtt-sparkplug-0.0.1.deb 
 
 NOTE: the "./" in front of the package name is important here!
+
 5. Restart FogLAMP
 
 
