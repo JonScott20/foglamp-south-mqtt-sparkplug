@@ -22,7 +22,6 @@ from sparkplug_b import *
 
 
 __author__ = "Jon Scott"
-__copyright__ = "Copyright (c) 2018 OSIsoft, LLC"
 __license__ = "Apache 2.0"
 __version__ = "${VERSION}"
 
